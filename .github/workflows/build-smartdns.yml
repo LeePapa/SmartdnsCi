@@ -21,7 +21,9 @@ env:
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: true
   TZ: Asia/Shanghai
-  LuCi:  aaa
+  LUCI: luci-compat
+  PLATFORM: openwrt
+  ARCH: mips_24kc
 
 jobs:
   build:

@@ -18,7 +18,7 @@ env:
   REPO_BRANCH: master
   CONFIG_FILE: .config
   DIY_SH: diy.sh
-  SSH_ACTIONS: true
+  SSH_ACTIONS: false
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   TZ: Asia/Shanghai
@@ -53,49 +53,31 @@ jobs:
 #        chmod +x $DIY_SH
 #        cd smartdns
 #        ../$DIY_SH
-#    - name: Update feeds
-#      run: cd smartdns && ./scripts/feeds update -a
 
-#    - name: Install feeds
-#      run: cd smartdns && ./scripts/feeds install -a
 
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
+      
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd smartdns/package/
+        chmod +x build-pkg.sh
+        ./build-pkg.sh $0 --platform luci-compat --outputdir target
+        ./build-pkg.sh $0 --platform openwrt --arch mips_24kc --outputdir target
+        echo "::set-output name=status::success"
 
-#    - name: Download package
-#      id: package
-#      run: |
-#        cd smartdns
-#        make defconfig
-#        make download -j8
-#        find dl -size -1024c -exec ls -l {} \;
-#        find dl -size -1024c -exec rm -f {} \;
-#    - name: Compile the firmware
-#      id: compile
-#      run: |
-#        cd openwrt
-#        echo -e "$(nproc) thread compile"
-#        make -j$(nproc) || make -j1 V=s
-#        echo "::set-output name=status::success"
     - name: Upload bin directory
       uses: actions/upload-artifact@master
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: SmartDns_bin
-        path: smartdns/bin
+        path: smartdns/target
 
-#    - name: Organize files
-#      id: organize
-#      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-#      run: |
-#        cd smartdns/bin/targets/*/*
-#        rm -rf packages
-#        echo "::set-env name=FIRMWARE::$PWD"
-#        echo "::set-output name=status::success"
-    - name: Upload firmware directory
-      uses: actions/upload-artifact@master
-      if: steps.organize.outputs.status == 'success' && !cancelled()
-      with:
-        name: SmartDns_firmware
-        path: ${{ env.FIRMWARE }}
+#    - name: Upload firmware directory
+#      uses: actions/upload-artifact@master
+#      if: steps.organize.outputs.status == 'success' && !cancelled()
+#      with:
+#        name: SmartDns_firmware
+#        path: ${{ env.FIRMWARE }}

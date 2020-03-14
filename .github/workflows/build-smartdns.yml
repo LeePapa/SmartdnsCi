@@ -66,8 +66,8 @@ jobs:
         mkdir target
         cd package
         chmod +x build-pkg.sh
-        ./build-pkg.sh $0 --platform luci-compat --outputdir ../target
-        ./build-pkg.sh $0 --platform openwrt --arch mips_24kc --outputdir ../target
+        ./build-pkg.sh '$0 --platform luci-compat --arch mips_24kc --outputdir ../target'
+        ./build-pkg.sh '$0 --platform openwrt --arch mips_24kc --outputdir ../target'
         echo "::set-output name=status::success"
 
     - name: Upload bin directory

@@ -65,8 +65,8 @@ jobs:
         cd smartdns
         mkdir target
         chmod +x build-pkg.sh
-        package/build-pkg.sh '$0 --platform luci-compat --arch mips_24kc --outputdir target'
-        package/build-pkg.sh '$0 --platform openwrt --arch mips_24kc --outputdir target'
+        package/build-pkg.sh '$0 --platform luci-compat --arch mips_24kc --outputdir $PWD/target'
+        package/build-pkg.sh '$0 --platform openwrt --arch mips_24kc --outputdir $PWD/target'
         echo "::set-output name=status::success"
 
     - name: Upload bin directory

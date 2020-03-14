@@ -20,7 +20,6 @@ env:
   DIY_SH: diy.sh
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: true
-  UPLOAD_FIRMWARE: true
   TZ: Asia/Shanghai
 
 jobs:

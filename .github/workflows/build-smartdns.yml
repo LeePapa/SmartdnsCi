@@ -14,9 +14,9 @@ on:
     types: started
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://github.com/pymumu/smartdns/
   REPO_BRANCH: master
-  CONFIG_FILE: k2p.config
+  CONFIG_FILE: .config
   DIY_SH: diy.sh
   SSH_ACTIONS: true
   UPLOAD_BIN_DIR: true
@@ -44,58 +44,58 @@ jobs:
         sudo -E apt-get -qq clean
         curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
     - name: Clone source code
-      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH smartdns
 
-    - name: Load custom configuration
-      run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_SH
-        cd openwrt
-        ../$DIY_SH
-    - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+#    - name: Load custom configuration
+#      run: |
+#        [ -e files ] && mv files smartdns/files
+#        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE smartdns/.config
+#        chmod +x $DIY_SH
+#        cd smartdns
+#        ../$DIY_SH
+#    - name: Update feeds
+#      run: cd smartdns && ./scripts/feeds update -a
 
-    - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+#    - name: Install feeds
+#      run: cd smartdns && ./scripts/feeds install -a
 
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
 
-    - name: Download package
-      id: package
-      run: |
-        cd openwrt
-        make defconfig
-        make download -j8
-        find dl -size -1024c -exec ls -l {} \;
-        find dl -size -1024c -exec rm -f {} \;
-    - name: Compile the firmware
-      id: compile
-      run: |
-        cd openwrt
-        echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 V=s
-        echo "::set-output name=status::success"
+#    - name: Download package
+#      id: package
+#      run: |
+#        cd smartdns
+#        make defconfig
+#        make download -j8
+#        find dl -size -1024c -exec ls -l {} \;
+#        find dl -size -1024c -exec rm -f {} \;
+#    - name: Compile the firmware
+#      id: compile
+#      run: |
+#        cd openwrt
+#        echo -e "$(nproc) thread compile"
+#        make -j$(nproc) || make -j1 V=s
+#        echo "::set-output name=status::success"
     - name: Upload bin directory
       uses: actions/upload-artifact@master
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: OpenWrt_bin
-        path: openwrt/bin
+        name: SmartDns_bin
+        path: smartdns/bin
 
-    - name: Organize files
-      id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      run: |
-        cd openwrt/bin/targets/*/*
-        rm -rf packages
-        echo "::set-env name=FIRMWARE::$PWD"
-        echo "::set-output name=status::success"
+#    - name: Organize files
+#      id: organize
+#      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+#      run: |
+#        cd smartdns/bin/targets/*/*
+#        rm -rf packages
+#        echo "::set-env name=FIRMWARE::$PWD"
+#        echo "::set-output name=status::success"
     - name: Upload firmware directory
       uses: actions/upload-artifact@master
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: OpenWrt_firmware
+        name: SmartDns_firmware
         path: ${{ env.FIRMWARE }}

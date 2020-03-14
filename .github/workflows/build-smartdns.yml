@@ -71,14 +71,7 @@ jobs:
 
     - name: Upload bin directory
       uses: actions/upload-artifact@master
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      if: steps.compile.outputs.status == 'success' && && !cancelled()
       with:
         name: SmartDns_bin
         path: smartdns/target
-
-#    - name: Upload firmware directory
-#      uses: actions/upload-artifact@master
-#      if: steps.organize.outputs.status == 'success' && !cancelled()
-#      with:
-#        name: SmartDns_firmware
-#        path: ${{ env.FIRMWARE }}

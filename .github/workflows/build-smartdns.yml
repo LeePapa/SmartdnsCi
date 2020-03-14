@@ -57,8 +57,8 @@ jobs:
         cd smartdns
         mkdir target
         chmod +x package/build-pkg.sh
-        package/build-pkg.sh '$0 --platform' env.LUCI '--arch' env.ARCH '--outputdir' $PWD/target
-        package/build-pkg.sh '$0 --platform' env.PLATFORM '--arch' env.ARCH '--outputdir' $PWD/target
+        package/build-pkg.sh '$0 --platform' $LUCI '--arch' $ARCH '--outputdir' $PWD/target
+        package/build-pkg.sh '$0 --platform' $PLATFORM '--arch' $ARCH '--outputdir' $PWD/target
         echo "::set-output name=status::success"
 
     - name: Upload bin directory

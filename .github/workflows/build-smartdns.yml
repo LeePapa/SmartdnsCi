@@ -21,6 +21,7 @@ env:
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: true
   TZ: Asia/Shanghai
+  LuCi:  aaa
 
 jobs:
   build:

@@ -71,7 +71,7 @@ jobs:
 
     - name: Upload bin directory
       uses: actions/upload-artifact@master
-      if: steps.compile.outputs.status == 'success' && && !cancelled()
+      if: steps.compile.outputs.status == 'success' && !cancelled()
       with:
         name: SmartDns_bin
         path: smartdns/target

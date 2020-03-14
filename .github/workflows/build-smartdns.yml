@@ -1,21 +1,13 @@
-#=================================================
-# https://github.com/P3TERX/Actions-OpenWrt
-# Description: Build OpenWrt using GitHub Actions
-# Lisence: MIT
-# Author: P3TERX
-# Blog: https://p3terx.com
-#=================================================
-
-name: 单独编译passwall
+name: SmartDns
 
 on:
   #release:
     #types: published
-  push:
-    branches:
-      - master
-    paths:
-      - 'k2p.config'
+#  push:
+#    branches:
+#      - master
+#    paths:
+#      - 'k2p.config'
 #  schedule:
 #    - cron: 0 8 * * 5
   watch:

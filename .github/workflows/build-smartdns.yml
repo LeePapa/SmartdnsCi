@@ -65,5 +65,5 @@ jobs:
       uses: actions/upload-artifact@master
       if: steps.compile.outputs.status == 'success' && !cancelled()
       with:
-        name: SmartDns_bin
+        name: $PLATFORM-$ARCH-SmartDns_bin
         path: smartdns/target

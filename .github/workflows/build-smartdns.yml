@@ -14,7 +14,7 @@ env:
   TZ: Asia/Shanghai
   LUCI: luci-compat
   PLATFORM: openwrt
-  ARCH: mipsel_24kc
+  ARCH: mipsel
 
 jobs:
   build:

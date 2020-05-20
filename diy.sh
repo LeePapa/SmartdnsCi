@@ -78,11 +78,12 @@ rmdir $WORKINGDIR/openwrt-smartdns-master
 rm $WORKINGDIR/master.zip
 
 
+
 #去掉makefile版本限制，使用最新源码
 
 sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$(date +'%Y%m%d')/g" $WORKINGDIR/Makefile #修改版本号为日期
 sed -i "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=master/g" $WORKINGDIR/Makefile #删除版本标识
-
+./scripts/feeds install package -a
 
 #官方方法安装luci,非最新版
 
@@ -118,6 +119,7 @@ sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$(date +'%Y%m%d')/g" $TO/Makefile #修改
 
 cp -rf luci-compat ../openwrt/feeds/luci/applications/luci-app-smartdns
 cd ../openwrt
+./scripts/feeds install luci -a
 
 #利用第三方法,安装最新版luci 结束
 

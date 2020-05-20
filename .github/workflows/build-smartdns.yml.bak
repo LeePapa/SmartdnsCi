@@ -1,6 +1,8 @@
 name: SmartDns
 
 on:
+   paths:
+     - 'config/smartdns.config'
   watch:
     types: started
 
